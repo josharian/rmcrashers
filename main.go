@@ -19,6 +19,7 @@ func main() {
 
 	mm, err := filepath.Glob("crashers/*.output")
 	check(err)
+	n := 0
 	for _, m := range mm {
 		b, err := ioutil.ReadFile(m)
 		check(err)
@@ -28,11 +29,13 @@ func main() {
 			continue
 		}
 		base := m[:len(m)-len(".output")]
-		log.Printf("rm crashers/%s.*", base)
+		n++
+		// log.Printf("rm crashers/%s.*", base)
 		check(os.Remove(m))
 		check(os.Remove(base))
 		check(os.Remove(base + ".quoted"))
 	}
+	log.Printf("deleted %d crashers", n)
 }
 
 func check(err error) {
